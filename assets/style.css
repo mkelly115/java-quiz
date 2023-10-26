@@ -3,7 +3,8 @@ button {
     background-color: blueviolet;
     font-family: Arial, Helvetica, sans-serif;
     color: white;
-    font-weight: 800
+    font-weight: 800;
+    text-align: center;
 }
 
 h1 {
@@ -15,5 +16,15 @@ h1 {
     font-weight: 500;
     font-family: Arial, Helvetica, sans-serif;
     box-sizing: border-box;
+    display: contents;
+    justify-content: center;
 
 }
+
+#flex {
+    flex-wrap:wrap ;
+    justify-content: center;
+    display: flex;
+    text-align: center;
+}
+
