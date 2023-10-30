@@ -1,4 +1,52 @@
-button {
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #f9fbfd;
+}
+
+.flex-centered {
+    justify-content: center;
+    display: flex;
+    text-align: center;
+    flex-direction: column;
+}
+.button {
+    background-color: blueviolet;
+    color: white;
+    font-weight: 800;
+    width: 150px    ;
+    padding: 10px;
+    margin: 10px;
+}
+.start-quiz {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+.timer {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 10px;
+}
+
+
+
+
+
+/* button {
     box-sizing: border-box;
     background-color: blueviolet;
     font-family: Arial, Helvetica, sans-serif;
@@ -12,19 +60,32 @@ h1 {
     font-family: Arial, Helvetica, sans-serif;
 }
 
-#intro {    
+.intro {    
     font-weight: 500;
     font-family: Arial, Helvetica, sans-serif;
     box-sizing: border-box;
     display: contents;
-    justify-content: center;
+    justify-content:flex-start;
 
 }
 
-#flex {
-    flex-wrap:wrap ;
-    justify-content: center;
-    display: flex;
+
+.container {
+    width: 500px;
+    border-radius: 20px;
+    background-color: white;
+}
+
+.hide {
+    display: none;
+}
+
+.score {
+    box-sizing: border-box;
+    background-color: blueviolet;
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+    font-weight: 800;
     text-align: center;
-}
 
+} */
