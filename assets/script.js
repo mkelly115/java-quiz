@@ -27,23 +27,16 @@ let prompts = [
     }
 ]
 function initializeTimer(){
-const timeEl = document.querySelector(".timer")
-let count = 60;
-timeEl.innerHTML=count;
-setInterval(function() {
-      count--;
-      timeEl.innerHTML=count;
-      if (count === 0) {
-        clearInterval(timer);
-      }
-    }, 1000);
-//  const timer = setInterval(function() {
-//   count--;
-//   if (count === 0) {
-//     clearInterval(timer);
-//   }
-// }, 1000);
+    const timeEl = document.querySelector(".timer")
+    let count = 60;
 
+    const timer = setInterval(function() {
+        count--;
+        timeEl.innerHTML=count;
+        if (count === 0) {
+            clearInterval(timer);
+        }
+    }, 1000);
 }
 
 function initializeQuiz(){
