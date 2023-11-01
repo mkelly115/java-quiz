@@ -1,4 +1,4 @@
-let prompts = [
+const prompts = [
     {
         question: "What is the starting position of an array?",
         answer: "0",
@@ -13,7 +13,7 @@ let prompts = [
     {
         question: "What does DOM stand for?",
         answer: "Document Object Model",
-        options: ["Document Object Magnification","Dynamic Object Model","Delisting Orator qModel","Document Object Model"]
+        options: ["Document Object Magnification","Dynamic Object Model","Delisting Orator Model","Document Object Model"]
     },
     {
         question: "Who invented JavaScript?",
@@ -26,30 +26,43 @@ let prompts = [
         options: ["1993","1991","1995","1999"]
     }
 ]
-function initializeTimer(){
-    const timeEl = document.querySelector(".timer")
-    let count = 60;
 
-    const timer = setInterval(function() {
-        count--;
-        timeEl.innerHTML=count;
-        if (count === 0) {
-            clearInterval(timer);
-        }
-    }, 1000);
-}
+const metadata = {
+    score: 0,
+    quizStarted: false,
+    currentQuestion: 0,
+    questionsAnswered: 0,
+    isCorrect: true,
+    timeLeft: 60,
+  };
+// function initializeTimer(){
+//     const timeEl = document.querySelector(".timer")
+//     let count = 60;
 
-function initializeQuiz(){
-    const startBtnEl = document.querySelector(".start-quiz")
-    console.log(startBtnEl)
-    startBtnEl.addEventListener("click", function(event) {
-       console.log (event)
-       initializeTimer()
-      });     
-}
+//     const timer = setInterval(function() {
+//         count--;
+//         timeEl.innerHTML=count;
+//         if (count === 0) {
+//             clearInterval(timer);
+//         }
+//     }, 1000);
+// }
+
+function handleQuizStarted() {
+    const $startBtnEl = document.querySelector(".start-quiz");
+    const $viewHiScoresBtnEl = document.querySelector(".view-hi-scores");
+    $startBtnEl.addEventListener("click", function(e) {
+      metadata.quizStarted = true;
+      renderQuizApp();
+      initCountDown();
+    });
+    $viewHiScoresBtnEl.addEventListener("click", function(e) {
+      handleViewHiScores();
+    });
+  };
 
 
-initializeQuiz()
+handleQuizStarted()
 // I HAVE ZERO CLUE IF THIS WORKS CAUSE NOTHING ELSE DOES
 // let count = 75;
 // const timer = setInterval(function() {
@@ -70,11 +83,11 @@ initializeQuiz()
 
 // function showQuestion () {
 
-//     const questionData = prompts [questionsEl];
+//     const questionData = prompts [questions];
 
-//     const questionElement = document.createElement("div");
+//     const questionElement = document.appendChild("container");
 //     questionElement.className = "question";
-//     questionElement.innerHTML = questionData.questionElement;
+//     questionElement.innerHTML = questionData.questions;
 
 //  for (let i = 0; i < prompts.length; i++) {
 //     text += prompts[i]
