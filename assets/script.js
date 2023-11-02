@@ -55,20 +55,19 @@ function initCountDown() {
 };
 
 function generateQuestionPageTemplate() {
-    const $quizContainer = document.querySelector(".quiz-container");
-    const $questionPageContainer = document.createElement("div");
-    $questionPageContainer.className = "flex-centered";
+    const quizContainer = document.querySelector(".quiz-container");
+    const questionPageContainer = document.createElement("div");
+    questionPageContainer.className = "flex-centered";
     const currentQuestion = QUIZ_STORE[metadata.currentQuestion].question;
     const answerA = QUIZ_STORE[metadata.currentQuestion].options[0];
     const answerB = QUIZ_STORE[metadata.currentQuestion].options[1];
     const answerC = QUIZ_STORE[metadata.currentQuestion].options[2];
     const answerD = QUIZ_STORE[metadata.currentQuestion].options[3];
   
-
-    emptyPreviousPageContent($quizContainer);
+    emptyPreviousPageContent(quizContainer);
   
-    $quizContainer.appendChild($questionPageContainer);
-    $questionPageContainer.innerHTML = `
+    quizContainer.appendChild(questionPageContainer);
+    questionPageContainer.innerHTML = `
       <h1>Question ${metadata.currentQuestion + 1} of 5</h1>
       <form class="quiz-form">
         <legend class="quiz-question">${currentQuestion}</legend>
@@ -124,8 +123,8 @@ function generateQuestionPageTemplate() {
       </form>
     `;
   
-    const $formEl = document.querySelector(".quiz-form");
-    $formEl.addEventListener("submit", (e) => handleQuestionSubmit(e));
+    const formEl = document.querySelector(".quiz-form");
+    formEl.addEventListener("submit", (e) => handleQuestionSubmit(e));
   };
 
 
@@ -141,6 +140,55 @@ function generateStartPageTemplate() {
       <button type="button" class="button view-hi-scores">View Hi-Scores</button>
     `;
 };
+function generateAnswerPageTemplate() {
+  const quizContainer = document.querySelector(".quiz-container");
+  const answerPageContainer = document.createElement("div");
+  const correctAnswer = QUIZ_STORE[metadata.currentQuestion].answer;
+  answerPageContainer.classList = "flex-centered answer-page";
+
+  //before appending new elements, empty quiz container
+  emptyPreviousPageContent(quizContainer);
+
+  quizContainer.appendChild(answerPageContainer);
+
+  answerPageContainer.innerHTML = `
+    <h1>${metadata.isCorrect ? "Correct!" : "Incorrect!"}</h1>
+    <p>The answer was: ${correctAnswer}</p>
+    <button type="button" class="button next-question">Next</button>
+  `;
+
+  const nextBtnEl = document.querySelector(".next-question");
+  nextBtnEl.addEventListener("click", handleNextQuestion);
+
+  if (metadata.questionsAnswered === 5) {
+    nextBtnEl.innerHTML = "Finish Quiz";
+  }
+};
+
+function generateResultsPageTemplate() {
+  const quizContainer = document.querySelector(".quiz-container");
+  const resultsPageContainer = document.createElement("div");
+  resultsPageContainer.classList = "flex-centered results-page";
+
+  //before appending new elements, empty quiz container
+  emptyPreviousPageContent(quizContainer);
+
+  quizContainer.appendChild(resultsPageContainer);
+  resultsPageContainer.innerHTML = `
+    <h1>${metadata.timeLeft <= 0 ? "Time's Up!" : "Congratulations!"}</h1>
+    <p>You've answered ${metadata.score} out of 5 questions correctly!</p>
+    <p>Your remaining time was: ${metadata.timeLeft} seconds</p>
+    <div class="results-controls">
+      <button type="button" class="button hiscore">Add to Hi-Scores</button>
+      <button type="button" class="button restart-quiz">Try Again</button>
+    </div>
+  `;
+
+  const hiScoresBtnEl = document.querySelector(".hiscore");
+  const restartBtnEl = document.querySelector(".restart-quiz");
+  hiScoresBtnEl.addEventListener("click", generateHiScoresTemplate);
+  restartBtnEl.addEventListener("click", handleResetQuiz);
+};
 
 function renderQuizApp() {
     if (!metadata.quizStarted) {
@@ -154,6 +202,33 @@ function renderQuizApp() {
     }
   };
   
+  
+  function generateHiScoresTemplate() {
+    const quizContainer = document.querySelector(".quiz-container");
+    const timerContainer = document.querySelector(".timer");
+  
+    
+    emptyPreviousPageContent(quizContainer);
+    emptyPreviousPageContent(timerContainer);
+  
+    const hiScoresForm = document.createElement("form");
+    hiScoresForm.classList = "hi-scores-form";
+  
+    quizContainer.appendChild(hiScoresForm);
+    hiScoresForm.innerHTML = `
+      <label for="initials">Enter Your Initials:</label>
+      <input id="initials" type="text" required>
+      <button 
+        type="submit" 
+        class="button submit-hiscores margin-top"
+      >
+        Submit
+      </button>
+    `;
+  
+    const formEl = document.querySelector(".hi-scores-form");
+    formEl.addEventListener("submit", (e) => handleAddToHiScores(e));
+  };
 
 function handleQuizStarted() {
     const startBtnEl = document.querySelector(".start-quiz");
@@ -163,9 +238,9 @@ function handleQuizStarted() {
         renderQuizApp();
         initCountDown();
     });
-    // viewHiScoresBtnEl.addEventListener("click", function(e) {
-    //   handleViewHiScores();
-    // });
+    viewHiScoresBtnEl.addEventListener("click", function(e) {
+      handleViewHiScores();
+    });
 };
 
 function generateQuestionPageTemplate() {
@@ -238,6 +313,32 @@ function generateQuestionPageTemplate() {
     `;
     const formEl = document.querySelector(".quiz-form");
     formEl.addEventListener("submit", (e) => handleQuestionSubmit(e));
+};
+
+function handleViewHiScores() {
+  const hiScores = JSON.parse(localStorage.getItem("hiscores"));
+  const hiScoresModalEl = document.querySelector(".hi-scores-modal")
+
+  if (!hiScores) {
+    window.alert("No Hi-Scores available");
+  } else {
+    hiScoresModalEl.innerHTML = `
+      <h1>Hi-Scores</h1>
+      <ol class="scores-list"></ol>
+      <button class="close">Close</button>
+    `;
+    hiScores.forEach(score => {
+      const list = document.querySelector(".scores-list");
+      list.innerHTML += `
+        <li><span>${score.initials} - Completed in ${score.time} seconds</span></li>
+      `;
+    });
+    hiScoresModalEl.open = true;
+    const closeBtn = document.querySelector(".close");
+    closeBtn.addEventListener("click", function() {
+      hiScoresModalEl.open = false;
+    });
+  }
 };
 
 function emptyPreviousPageContent(parentNode) {
