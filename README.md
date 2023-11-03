@@ -13,7 +13,7 @@ This project was the toughest test of my ability to internalize information lear
 
 A combination of outside help and internet searching led me to learn three new features of JS that we had not gone over completely in class.
 
-I learned now to to define a variable within a string by using the $ key. It is called string interlopation within template literals.
+I learned now to to define a variable within a string by using the $ key. It is called string interpolation within template literals.
 
 I learned about turnary operators and how the ? will allow me to shorthand if else statments (within the context of my project it applied to true and false statements).
 
